@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { Patient } from './patients/entities/patient.entity';
 import { PatientsModule } from './patients/patients.module';
+import { LegalGuardiansModule } from './legal-guardians/legal-guardians.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { PatientsModule } from './patients/patients.module';
       synchronize: true,
     }),
     PatientsModule,
+    LegalGuardiansModule,
   ],
   controllers: [],
   providers: [],
