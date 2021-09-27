@@ -17,7 +17,7 @@ export class LegalGuardiansController {
   constructor(private readonly legalGuardiansService: LegalGuardiansService) {}
 
   @Post()
-  @HttpCode(200)
+  @HttpCode(201)
   create(@Body() createLegalGuardianDto: CreateLegalGuardianDto) {
     return this.legalGuardiansService.create(createLegalGuardianDto);
   }
