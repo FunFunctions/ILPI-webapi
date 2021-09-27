@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Connection } from 'typeorm';
 import { Patient } from './patients/entities/patient.entity';
@@ -11,13 +12,14 @@ import { LegalGuardian } from './legal-guardians/entities/legal-guardian.entity'
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'postgres',
-      port: 5432,
-      username: 'admin',
-      password: '123',
-      database: 'ilpi',
+      port: +process.env.DBMS_PORT,
+      username: process.env.DBMS_USERNAME,
+      password: process.env.DBMS_PASSWORD,
+      database: process.env.DBMS_DATABASE,
       entities: [Patient, LegalGuardian],
       synchronize: true,
     }),
+    ConfigModule.forRoot(),
     PatientsModule,
     LegalGuardiansModule,
   ],
