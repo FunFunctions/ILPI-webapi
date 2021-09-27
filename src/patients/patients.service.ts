@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreatePatientDto } from './dto/create-patient.dto';
@@ -22,15 +22,26 @@ export class PatientsService {
   }
 
   async findOne(id: number) {
-    const patients = await this.patientsRepository.findOne(id);
-    return patients;
+    const patient = await this.patientsRepository.findOne(id);
+    if (!patient) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return patient;
   }
 
-  update(id: number, updatePatientDto: UpdatePatientDto) {
+  async update(id: number, updatePatientDto: UpdatePatientDto) {
+    const patient = await this.patientsRepository.findOne(id);
+    if (!patient) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
     this.patientsRepository.update(id, updatePatientDto);
   }
 
   async remove(id: number) {
+    const patient = await this.patientsRepository.findOne(id);
+    if (!patient) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
     await this.patientsRepository.delete(id);
   }
 }
