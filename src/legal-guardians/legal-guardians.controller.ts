@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { LegalGuardiansService } from './legal-guardians.service';
 import { CreateLegalGuardianDto } from './dto/create-legal-guardian.dto';
@@ -30,14 +31,14 @@ export class LegalGuardiansController {
 
   @Get(':id')
   @HttpCode(200)
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.legalGuardiansService.findOne(+id);
   }
 
   @Patch(':id')
   @HttpCode(200)
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: string,
     @Body() updateLegalGuardianDto: UpdateLegalGuardianDto,
   ) {
     return this.legalGuardiansService.update(+id, updateLegalGuardianDto);
@@ -45,7 +46,7 @@ export class LegalGuardiansController {
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.legalGuardiansService.remove(+id);
   }
 }

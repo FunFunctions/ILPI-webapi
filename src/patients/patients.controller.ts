@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
@@ -28,21 +29,24 @@ export class PatientsController {
     return this.patientsService.findAll();
   }
 
-  @HttpCode(200)
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @HttpCode(200)
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.patientsService.findOne(+id);
   }
 
   @Patch(':id')
   @HttpCode(200)
-  update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
+  update(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() updatePatientDto: UpdatePatientDto,
+  ) {
     return this.patientsService.update(+id, updatePatientDto);
   }
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.patientsService.remove(+id);
   }
 }
