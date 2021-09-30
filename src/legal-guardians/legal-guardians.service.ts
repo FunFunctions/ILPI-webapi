@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateLegalGuardianDto } from './dto/create-legal-guardian.dto';
@@ -12,8 +12,8 @@ export class LegalGuardiansService {
     private legalGuardiansRepository: Repository<LegalGuardian>,
   ) {}
 
-  create(createLegalGuardianDto: CreateLegalGuardianDto) {
-    this.legalGuardiansRepository.insert(createLegalGuardianDto);
+  create(CreateLegalGuardianDto: CreateLegalGuardianDto) {
+    this.legalGuardiansRepository.insert(CreateLegalGuardianDto);
   }
 
   async findAll() {
@@ -22,15 +22,26 @@ export class LegalGuardiansService {
   }
 
   async findOne(id: number) {
-    const legalGuardians = await this.legalGuardiansRepository.findOne(id);
-    return legalGuardians;
+    const legalGuardian = await this.legalGuardiansRepository.findOne(id);
+    if (!legalGuardian) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    return legalGuardian;
   }
 
-  update(id: number, updateLegalGuardianDto: UpdateLegalGuardianDto) {
-    this.legalGuardiansRepository.update(id, updateLegalGuardianDto);
+  async update(id: number, UpdateLegalGuardianDto: UpdateLegalGuardianDto) {
+    const legalGuardian = await this.legalGuardiansRepository.findOne(id);
+    if (!legalGuardian) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
+    this.legalGuardiansRepository.update(id, UpdateLegalGuardianDto);
   }
 
   async remove(id: number) {
+    const legalGuardian = await this.legalGuardiansRepository.findOne(id);
+    if (!legalGuardian) {
+      throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
+    }
     await this.legalGuardiansRepository.delete(id);
   }
 }
