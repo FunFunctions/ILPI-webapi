@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { PatientsService } from './patients.service';
 import { CreatePatientDto } from './dto/create-patient.dto';
@@ -16,27 +18,35 @@ export class PatientsController {
   constructor(private readonly patientsService: PatientsService) {}
 
   @Post()
+  @HttpCode(201)
   create(@Body() createPatientDto: CreatePatientDto) {
     return this.patientsService.create(createPatientDto);
   }
 
   @Get()
+  @HttpCode(200)
   findAll() {
     return this.patientsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @HttpCode(200)
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.patientsService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePatientDto: UpdatePatientDto) {
+  @HttpCode(200)
+  update(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() updatePatientDto: UpdatePatientDto,
+  ) {
     return this.patientsService.update(+id, updatePatientDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @HttpCode(204)
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.patientsService.remove(+id);
   }
 }
