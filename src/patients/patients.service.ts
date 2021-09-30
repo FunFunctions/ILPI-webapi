@@ -16,7 +16,7 @@ export class PatientsService {
     this.patientsRepository.insert(createPatientDto);
   }
 
-  async findAll() {
+  async findAll(): Promise<Patient[]> {
     const patients = await this.patientsRepository.find();
     return patients;
   }
