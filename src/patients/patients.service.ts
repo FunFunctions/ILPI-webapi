@@ -16,12 +16,12 @@ export class PatientsService {
     this.patientsRepository.insert(createPatientDto);
   }
 
-  async findAll() {
+  async findAll(): Promise<Patient[]> {
     const patients = await this.patientsRepository.find();
     return patients;
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<Patient> {
     const patients = await this.patientsRepository.findOne(id);
     return patients;
   }

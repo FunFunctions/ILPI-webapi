@@ -5,6 +5,9 @@ import { Connection } from 'typeorm';
 import { PatientsModule } from './patients/patients.module';
 import { LegalGuardiansModule } from './legal-guardians/legal-guardians.module';
 import { typeOrmConfig } from './config/typeorm.config';
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
+import { GoogleStrategy } from './google.strategy';
 
 @Module({
   imports: [
@@ -13,8 +16,8 @@ import { typeOrmConfig } from './config/typeorm.config';
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(typeOrmConfig),
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService, GoogleStrategy],
 })
 export class AppModule {
   constructor(private connection: Connection) {}
